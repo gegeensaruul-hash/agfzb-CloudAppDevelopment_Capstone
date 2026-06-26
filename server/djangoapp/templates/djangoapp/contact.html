@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'djangoapp/style.css' %}">
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/about">About Us</a>
+        <a href="/contact" class="active">Contact Us</a>
+    </nav>
+
+    <h1>Contact Us</h1>
+
+    <div class="contact-info">
+        <div class="contact-item">
+            <img src="https://randomuser.me/api/portraits/women/10.jpg" alt="Reception">
+            <h2>Best Cars Dealership</h2>
+            <p>123 Auto Drive, Chicago, IL 60601</p>
+            <p>Phone: (312) 555-0100</p>
+            <p>Email: info@bestcars.com</p>
+            <p>Hours: Mon-Fri 9am-6pm, Sat 10am-4pm</p>
+        </div>
+    </div>
+</body>
+</html>
