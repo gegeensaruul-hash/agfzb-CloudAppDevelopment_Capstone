@@ -16,7 +16,6 @@ def contact(request):
     return render(request, 'djangoapp/contact.html')
 
 def login_request(request):
-    context = {}
     if request.method == "POST":
         data = json.loads(request.body)
         username = data.get('userName')
@@ -34,7 +33,6 @@ def logout_request(request):
     return JsonResponse({"userName": ""})
 
 def registration(request):
-    context = {}
     if request.method == "POST":
         data = json.loads(request.body)
         username = data.get('userName')
@@ -58,14 +56,56 @@ def registration(request):
     return JsonResponse({"status": "GET not allowed"})
 
 def get_dealerships(request):
-    context = {}
-    if request.method == "GET":
-        return render(request, 'djangoapp/index.html', context)
+    dealers = [
+        {"id": 1, "name": "Best Cars Chicago", "city": "Chicago", "state": "IL"},
+        {"id": 2, "name": "Top Autos New York", "city": "New York", "state": "NY"},
+        {"id": 3, "name": "Premier Motors LA", "city": "Los Angeles", "state": "CA"},
+        {"id": 4, "name": "Kansas City Motors", "city": "Kansas City", "state": "KS"},
+        {"id": 5, "name": "Wichita Auto Group", "city": "Wichita", "state": "KS"},
+    ]
+    return render(request, 'djangoapp/index.html', {"dealers": dealers})
 
 def get_dealer_details(request, dealer_id):
-    context = {}
-    return render(request, 'djangoapp/dealer_details.html', context)
+    reviews = [
+        {"id": 1, "dealer_id": dealer_id, "review": "Great service!", "sentiment": "positive"},
+        {"id": 2, "dealer_id": dealer_id, "review": "Good experience.", "sentiment": "positive"},
+    ]
+    return render(request, 'djangoapp/dealer_details.html', {"dealer_id": dealer_id, "reviews": reviews})
+
+def get_dealers_by_state(request, state):
+    all_dealers = [
+        {"id": 1, "name": "Best Cars Chicago", "city": "Chicago", "state": "IL"},
+        {"id": 2, "name": "Top Autos New York", "city": "New York", "state": "NY"},
+        {"id": 3, "name": "Premier Motors LA", "city": "Los Angeles", "state": "CA"},
+        {"id": 4, "name": "Kansas City Motors", "city": "Kansas City", "state": "KS"},
+        {"id": 5, "name": "Wichita Auto Group", "city": "Wichita", "state": "KS"},
+    ]
+    filtered = [d for d in all_dealers if d["state"] == state.upper()]
+    return JsonResponse({"dealers": filtered})
+
+def get_car_makes(request):
+    cars = [
+        {"id": 1, "make": "Toyota", "model": "Camry"},
+        {"id": 2, "make": "Honda", "model": "Civic"},
+        {"id": 3, "make": "Ford", "model": "Mustang"},
+    ]
+    return JsonResponse({"cars": cars})
+
+def analyze_review(request):
+    review_text = request.GET.get('text', '')
+    sentiment = "positive" if "fantastic" in review_text.lower() or "great" in review_text.lower() else "neutral"
+    return JsonResponse({"sentiment": sentiment, "review": review_text})
 
 def add_review(request, dealer_id):
-    context = {}
+    if request.method == "POST":
+        review_text = request.POST.get('review', '')
+        car_make = request.POST.get('car_make', '')
+        car_model = request.POST.get('car_model', '')
+        reviews = [
+            {"id": 1, "dealer_id": dealer_id, "review": "Great service!", "sentiment": "positive"},
+            {"id": 2, "dealer_id": dealer_id, "review": "Good experience.", "sentiment": "positive"},
+            {"id": 3, "dealer_id": dealer_id, "review": review_text, "sentiment": "positive", "car": f"{car_make} {car_model}"},
+        ]
+        return render(request, 'djangoapp/dealer_details.html', {"dealer_id": dealer_id, "reviews": reviews})
+    context = {"dealer_id": dealer_id}
     return render(request, 'djangoapp/add_review.html', context)
