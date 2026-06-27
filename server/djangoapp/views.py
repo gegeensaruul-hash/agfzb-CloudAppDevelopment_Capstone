@@ -109,3 +109,26 @@ def add_review(request, dealer_id):
         return render(request, 'djangoapp/dealer_details.html', {"dealer_id": dealer_id, "reviews": reviews})
     context = {"dealer_id": dealer_id}
     return render(request, 'djangoapp/add_review.html', context)
+def get_dealers_json(request):
+    dealers = [
+        {"id": 1, "name": "Best Cars Chicago", "city": "Chicago", "state": "IL"},
+        {"id": 2, "name": "Top Autos New York", "city": "New York", "state": "NY"},
+        {"id": 3, "name": "Premier Motors LA", "city": "Los Angeles", "state": "CA"},
+        {"id": 4, "name": "Kansas City Motors", "city": "Kansas City", "state": "KS"},
+        {"id": 5, "name": "Wichita Auto Group", "city": "Wichita", "state": "KS"},
+    ]
+    return JsonResponse({"dealers": dealers})
+
+def get_dealer_json(request, dealer_id):
+    dealers = {
+        1: {"dealer_id": 1, "name": "Best Cars Chicago", "city": "Chicago", "state": "IL", "address": "123 Main St", "zip": "60601"},
+        2: {"dealer_id": 2, "name": "Top Autos New York", "city": "New York", "state": "NY", "address": "456 Broadway", "zip": "10001"},
+    }
+    return JsonResponse(dealers.get(dealer_id, {}))
+
+def get_reviews_json(request, dealer_id):
+    reviews = [
+        {"id": 1, "dealer_id": dealer_id, "name": "John Doe", "review": "Great service!", "sentiment": "positive"},
+        {"id": 2, "dealer_id": dealer_id, "name": "Jane Smith", "review": "Good experience.", "sentiment": "positive"},
+    ]
+    return JsonResponse({"reviews": reviews})
