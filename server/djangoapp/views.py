@@ -57,11 +57,11 @@ def registration(request):
 
 def get_dealerships(request):
     dealers = [
-        {"id": 1, "name": "Best Cars Chicago", "city": "Chicago", "state": "IL"},
-        {"id": 2, "name": "Top Autos New York", "city": "New York", "state": "NY"},
-        {"id": 3, "name": "Premier Motors LA", "city": "Los Angeles", "state": "CA"},
-        {"id": 4, "name": "Kansas City Motors", "city": "Kansas City", "state": "KS"},
-        {"id": 5, "name": "Wichita Auto Group", "city": "Wichita", "state": "KS"},
+        {"id": 1, "name": "Best Cars Chicago", "city": "Chicago", "state": "IL", "address": "123 Main St", "zip": "60601"},
+        {"id": 2, "name": "Top Autos New York", "city": "New York", "state": "NY", "address": "456 Broadway", "zip": "10001"},
+        {"id": 3, "name": "Premier Motors LA", "city": "Los Angeles", "state": "CA", "address": "789 Sunset Blvd", "zip": "90001"},
+        {"id": 4, "name": "Kansas City Motors", "city": "Kansas City", "state": "KS", "address": "321 Main St", "zip": "66101"},
+        {"id": 5, "name": "Wichita Auto Group", "city": "Wichita", "state": "KS", "address": "654 Central Ave", "zip": "67202"},
     ]
     return render(request, 'djangoapp/index.html', {"dealers": dealers})
 

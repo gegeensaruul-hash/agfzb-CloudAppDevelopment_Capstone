@@ -42,6 +42,8 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>City</th>
+                    <th>Address</th>
+                    <th>ZIP</th>
                     <th>State</th>
                     <th>Review</th>
                 </tr>
@@ -52,6 +54,8 @@
                     <td>{{ d.id }}</td>
                     <td>{{ d.name }}</td>
                     <td>{{ d.city }}</td>
+                    <td>{{ d.address }}</td>
+                    <td>{{ d.zip }}</td>
                     <td>{{ d.state }}</td>
                     <td><a href="/djangoapp/dealer/{{ d.id }}/">Review Dealer</a></td>
                 </tr>
