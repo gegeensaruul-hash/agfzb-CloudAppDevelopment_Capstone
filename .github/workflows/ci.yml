@@ -3,32 +3,35 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install django djangorestframework django-cors-headers
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install django djangorestframework django-cors-headers
 
-    - name: Run tests
-      run: |
-        cd server
-        python manage.py test
+      - name: Run tests
+        run: |
+          cd server
+          python manage.py test
 
-    - name: Lint with pylint
-      run: |
-        pip install pylint
-        pylint server/djangoapp/views.py --disable=all --enable=E || true
+      - name: Lint Python Files
+        run: |
+          pip install pylint
+          pylint server/djangoapp/views.py --disable=all --enable=E || true
+
+      - name: Lint JavaScript Files
+        run: |
+          npm install -g eslint
+          eslint server/frontend/src --ext .js,.jsx || true
