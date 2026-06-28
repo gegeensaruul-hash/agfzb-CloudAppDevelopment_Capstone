@@ -127,12 +127,6 @@ def get_dealer_json(request, dealer_id):
     }
     return JsonResponse(dealers.get(dealer_id, {}))
 
-def get_dealer_json(request, dealer_id):
-    dealers = {
-        1: {"dealer_id": 1, "name": "Best Cars Chicago", "city": "Chicago", "state": "IL", "address": "123 Main St", "zip": "60601"},
-        2: {"dealer_id": 2, "name": "Top Autos New York", "city": "New York", "state": "NY", "address": "456 Broadway", "zip": "10001"},
-    }
-    return JsonResponse(dealers.get(dealer_id, {}))
 
 def get_reviews_json(request, dealer_id):
     reviews = [
