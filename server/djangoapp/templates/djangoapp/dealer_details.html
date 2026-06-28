@@ -26,7 +26,6 @@
             </ul>
         </div>
     </nav>
-
     <div class="container mt-4">
         <h1>Dealer {{ dealer_id }} Reviews</h1>
         <a href="/djangoapp/review/dealer/{{ dealer_id }}/" class="btn btn-primary mb-3">Post a Review</a>
@@ -34,7 +33,16 @@
         <div class="card mb-3">
             <div class="card-body">
                 <p class="card-text">{{ review.review }}</p>
-                <span class="badge badge-success">{{ review.sentiment }}</span>
+                {% if review.sentiment == "positive" %}
+                    <span style="font-size:2rem;">😊</span>
+                    <span class="badge badge-success">{{ review.sentiment }}</span>
+                {% elif review.sentiment == "negative" %}
+                    <span style="font-size:2rem;">😞</span>
+                    <span class="badge badge-danger">{{ review.sentiment }}</span>
+                {% else %}
+                    <span style="font-size:2rem;">😐</span>
+                    <span class="badge badge-warning">{{ review.sentiment }}</span>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
