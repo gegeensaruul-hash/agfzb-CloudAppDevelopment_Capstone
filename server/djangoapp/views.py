@@ -89,7 +89,7 @@ def get_car_makes(request):
         {"id": 2, "make": "Honda", "model": "Civic"},
         {"id": 3, "make": "Ford", "model": "Mustang"},
     ]
-    return JsonResponse({"cars": cars})
+    return JsonResponse({"CarModels": cars})
 
 def analyze_review(request):
     review_text = request.GET.get('text', '')
@@ -128,7 +128,7 @@ def get_dealer_json(request, dealer_id):
 
 def get_reviews_json(request, dealer_id):
     reviews = [
-        {"id": 1, "dealer_id": dealer_id, "name": "John Doe", "review": "Great service!", "sentiment": "positive"},
-        {"id": 2, "dealer_id": dealer_id, "name": "Jane Smith", "review": "Good experience.", "sentiment": "positive"},
+        {"id": 1, "dealer_id": dealer_id, "name": "John Doe", "review": "Great service!", "sentiment": "positive", "purchase_date": "2024-01-15", "car_make": "Toyota", "car_model": "Camry", "car_year": 2022},
+        {"id": 2, "dealer_id": dealer_id, "name": "Jane Smith", "review": "Good experience.", "sentiment": "positive", "purchase_date": "2024-02-20", "car_make": "Honda", "car_model": "Civic", "car_year": 2023},
     ]
     return JsonResponse({"reviews": reviews})
