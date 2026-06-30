@@ -73,14 +73,11 @@ def get_dealer_details(request, dealer_id):
     return render(request, 'djangoapp/dealer_details.html', {"dealer_id": dealer_id, "reviews": reviews})
 
 def get_dealers_by_state(request, state):
-    all_dealers = [
-        {"id": 1, "full_name": "Best Cars Chicago LLC", "city": "Chicago", "state": "IL", "address": "123 Main St", "zip": "60601", "lat": "41.8781", "long": "-87.6298", "short_name": "Best Cars"},
-        {"id": 2, "full_name": "Top Autos New York LLC", "city": "New York", "state": "NY", "address": "456 Broadway", "zip": "10001", "lat": "40.7128", "long": "-74.0060", "short_name": "Top Autos"},
-        {"id": 3, "full_name": "Premier Motors LA LLC", "city": "Los Angeles", "state": "CA", "address": "789 Sunset Blvd", "zip": "90001", "lat": "34.0522", "long": "-118.2437", "short_name": "Premier Motors"},
-        {"id": 4, "full_name": "Kansas City Motors LLC", "city": "Kansas City", "state": "KS", "address": "321 Main St", "zip": "66101", "lat": "39.1141", "long": "-94.6275", "short_name": "KC Motors"},
-        {"id": 5, "full_name": "Wichita Auto Group LLC", "city": "Wichita", "state": "KS", "address": "654 Central Ave", "zip": "67202", "lat": "37.6872", "long": "-97.3301", "short_name": "Wichita Auto"},
+    all_dealers = load_dealerships()
+    filtered = [
+        d for d in all_dealers
+        if d.get("st", "").upper() == state.upper() or d.get("state", "").upper() == state.upper()
     ]
-    filtered = [d for d in all_dealers if d["state"] == state.upper()]
     return JsonResponse({"dealers": filtered})
 
 def get_car_makes(request):
