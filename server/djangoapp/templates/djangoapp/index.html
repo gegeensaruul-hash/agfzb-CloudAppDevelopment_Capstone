@@ -36,6 +36,14 @@
     </nav>
     <div class="container mt-4">
         <h1>Car Dealerships</h1>
+
+        <div class="form-group" style="max-width: 300px;">
+            <label for="stateFilter"><strong>Filter by State:</strong></label>
+            <select id="stateFilter" class="form-control">
+                <option value="">All States</option>
+            </select>
+        </div>
+
         <table class="table table-bordered" id="dealerTable">
             <thead class="thead-dark">
                 <tr>
@@ -63,5 +71,63 @@
             </tbody>
         </table>
     </div>
+
+    <script>
+        const allDealers = [
+            {% for d in dealers %}
+            {
+                id: "{{ d.id }}",
+                full_name: "{{ d.full_name }}",
+                city: "{{ d.city }}",
+                address: "{{ d.address }}",
+                zip: "{{ d.zip }}",
+                state: "{{ d.state }}",
+                st: "{{ d.st }}"
+            },
+            {% endfor %}
+        ];
+
+        const stateSelect = document.getElementById('stateFilter');
+        const uniqueStates = [...new Set(allDealers.map(d => d.st))].sort();
+        uniqueStates.forEach(st => {
+            const opt = document.createElement('option');
+            opt.value = st;
+            opt.textContent = st;
+            stateSelect.appendChild(opt);
+        });
+
+        function renderTable(dealers) {
+            const tbody = document.getElementById('dealerBody');
+            tbody.innerHTML = '';
+            dealers.forEach(d => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${d.id}</td>
+                    <td>${d.full_name}</td>
+                    <td>${d.city}</td>
+                    <td>${d.address}</td>
+                    <td>${d.zip}</td>
+                    <td>${d.state}</td>
+                    <td><a href="/djangoapp/dealer/${d.id}/">Review Dealer</a></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        stateSelect.addEventListener('change', function() {
+            const selectedState = this.value;
+            if (!selectedState) {
+                renderTable(allDealers);
+                history.pushState(null, '', '/djangoapp/');
+                return;
+            }
+            fetch(`/djangoapp/dealers/state/${selectedState}/`)
+                .then(response => response.json())
+                .then(data => {
+                    renderTable(data.dealers);
+                    history.pushState(null, '', `/djangoapp/dealers/state/${selectedState}/`);
+                });
+        });
+    </script>
 </body>
 </html>
