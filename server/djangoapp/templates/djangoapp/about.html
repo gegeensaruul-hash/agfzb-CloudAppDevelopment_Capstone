@@ -6,12 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us</title>
     <link rel="stylesheet" type="text/css" href="{% static 'djangoapp/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 <body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/about">About Us</a>
-        <a href="/contact">Contact Us</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Best Cars</a>
+        <div class="navbar-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link active" href="/about">About Us</a>
+            <a class="nav-link" href="/contact">Contact Us</a>
+        </div>
     </nav>
     <h1>About Us</h1>
     <div class="container">
@@ -21,27 +25,29 @@
         We offer a wide selection of new and pre-owned vehicles from top manufacturers, 
         along with financing options, trade-ins, and after-sales support.</p>
     </div>
-    <div class="team">
-        <div class="member">
-            <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="John Smith">
-            <h2>John Smith</h2>
-            <h3>CEO</h3>
-            <p>John has over 20 years of experience in the automotive industry.</p>
-            <p>Email: john.smith@bestcars.dealership.com</p>
-        </div>
-        <div class="member">
-            <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="Sarah Johnson">
-            <h2>Sarah Johnson</h2>
-            <h3>Sales Manager</h3>
-            <p>Sarah leads our nationwide sales team with passion and dedication.</p>
-            <p>Email: sarah.johnson@bestcars.dealership.com</p>
-        </div>
-        <div class="member">
-            <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="Michael Brown">
-            <h2>Michael Brown</h2>
-            <h3>Customer Service Director</h3>
-            <p>Michael ensures every customer has an outstanding experience.</p>
-            <p>Email: michael.brown@bestcars.dealership.com</p>
+    <div class="team container">
+        <div class="row">
+            <div class="member col-md-4">
+                <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="John Smith" class="img-fluid rounded-circle">
+                <h2>John Smith</h2>
+                <h3>CEO</h3>
+                <p>John has over 20 years of experience in the automotive industry.</p>
+                <p>Email: john.smith@bestcars.dealership.com</p>
+            </div>
+            <div class="member col-md-4">
+                <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="Sarah Johnson" class="img-fluid rounded-circle">
+                <h2>Sarah Johnson</h2>
+                <h3>Sales Manager</h3>
+                <p>Sarah leads our nationwide sales team with passion and dedication.</p>
+                <p>Email: sarah.johnson@bestcars.dealership.com</p>
+            </div>
+            <div class="member col-md-4">
+                <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="Michael Brown" class="img-fluid rounded-circle">
+                <h2>Michael Brown</h2>
+                <h3>Customer Service Director</h3>
+                <p>Michael ensures every customer has an outstanding experience.</p>
+                <p>Email: michael.brown@bestcars.dealership.com</p>
+            </div>
         </div>
     </div>
 </body>
