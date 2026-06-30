@@ -6,14 +6,25 @@ from django.contrib import messages
 from datetime import datetime
 import logging
 import json
+import os
 
 logger = logging.getLogger(__name__)
+
+
+def load_dealerships():
+    json_path = os.path.join(os.path.dirname(__file__), '..', '..', 'cloudant', 'data', 'dealerships.json')
+    with open(json_path, 'r') as f:
+        data = json.load(f)
+    return data.get('dealerships', [])
+
 
 def about(request):
     return render(request, 'djangoapp/about.html')
 
+
 def contact(request):
     return render(request, 'djangoapp/contact.html')
+
 
 def login_request(request):
     if request.method == "POST":
@@ -28,9 +39,11 @@ def login_request(request):
             return JsonResponse({"userName": username, "status": "Failed"})
     return JsonResponse({"status": "GET not allowed"})
 
+
 def logout_request(request):
     logout(request)
     return JsonResponse({"userName": ""})
+
 
 def registration(request):
     if request.method == "POST":
@@ -55,15 +68,11 @@ def registration(request):
             return JsonResponse({"userName": username, "status": "Authenticated"})
     return JsonResponse({"status": "GET not allowed"})
 
+
 def get_dealerships(request):
-    dealers = [
-        {"id": 1, "name": "Best Cars Chicago", "city": "Chicago", "state": "IL", "address": "123 Main St", "zip": "60601"},
-        {"id": 2, "name": "Top Autos New York", "city": "New York", "state": "NY", "address": "456 Broadway", "zip": "10001"},
-        {"id": 3, "name": "Premier Motors LA", "city": "Los Angeles", "state": "CA", "address": "789 Sunset Blvd", "zip": "90001"},
-        {"id": 4, "name": "Kansas City Motors", "city": "Kansas City", "state": "KS", "address": "321 Main St", "zip": "66101"},
-        {"id": 5, "name": "Wichita Auto Group", "city": "Wichita", "state": "KS", "address": "654 Central Ave", "zip": "67202"},
-    ]
+    dealers = load_dealerships()
     return render(request, 'djangoapp/index.html', {"dealers": dealers})
+
 
 def get_dealer_details(request, dealer_id):
     reviews = [
@@ -71,6 +80,7 @@ def get_dealer_details(request, dealer_id):
         {"id": 2, "dealer_id": dealer_id, "review": "Good experience.", "sentiment": "positive"},
     ]
     return render(request, 'djangoapp/dealer_details.html', {"dealer_id": dealer_id, "reviews": reviews})
+
 
 def get_dealers_by_state(request, state):
     all_dealers = load_dealerships()
@@ -80,6 +90,7 @@ def get_dealers_by_state(request, state):
     ]
     return JsonResponse({"dealers": filtered})
 
+
 def get_car_makes(request):
     cars = [
         {"id": 1, "make": "Toyota", "model": "Camry"},
@@ -88,10 +99,12 @@ def get_car_makes(request):
     ]
     return JsonResponse({"CarModels": cars})
 
+
 def analyze_review(request):
     review_text = request.GET.get('text', '')
     sentiment = "positive" if "fantastic" in review_text.lower() or "great" in review_text.lower() else "neutral"
     return JsonResponse({"sentiment": sentiment, "review": review_text})
+
 
 def add_review(request, dealer_id):
     if request.method == "POST":
@@ -107,22 +120,18 @@ def add_review(request, dealer_id):
     context = {"dealer_id": dealer_id}
     return render(request, 'djangoapp/add_review.html', context)
 
+
 def get_dealers_json(request):
-    dealers = [
-        {"id": 1, "name": "Best Cars Chicago", "city": "Chicago", "state": "IL", "zip": "60601", "lat": "41.8781", "long": "-87.6298", "short_name": "Best Cars", "full_name": "Best Cars Chicago LLC"},
-        {"id": 2, "name": "Top Autos New York", "city": "New York", "state": "NY", "zip": "10001", "lat": "40.7128", "long": "-74.0060", "short_name": "Top Autos", "full_name": "Top Autos New York LLC"},
-        {"id": 3, "name": "Premier Motors LA", "city": "Los Angeles", "state": "CA", "zip": "90001", "lat": "34.0522", "long": "-118.2437", "short_name": "Premier Motors", "full_name": "Premier Motors LA LLC"},
-        {"id": 4, "name": "Kansas City Motors", "city": "Kansas City", "state": "KS", "zip": "66101", "lat": "39.1141", "long": "-94.6275", "short_name": "KC Motors", "full_name": "Kansas City Motors LLC"},
-        {"id": 5, "name": "Wichita Auto Group", "city": "Wichita", "state": "KS", "zip": "67202", "lat": "37.6872", "long": "-97.3301", "short_name": "Wichita Auto", "full_name": "Wichita Auto Group LLC"},
-    ]
+    dealers = load_dealerships()
     return JsonResponse({"dealers": dealers})
 
+
 def get_dealer_json(request, dealer_id):
-    dealers = {
-        1: {"dealer_id": 1, "name": "Best Cars Chicago", "city": "Chicago", "state": "IL", "address": "123 Main St", "zip": "60601", "lat": "41.8781", "long": "-87.6298", "short_name": "Best Cars", "full_name": "Best Cars Chicago LLC"},
-        2: {"dealer_id": 2, "name": "Top Autos New York", "city": "New York", "state": "NY", "address": "456 Broadway", "zip": "10001", "lat": "40.7128", "long": "-74.0060", "short_name": "Top Autos", "full_name": "Top Autos New York LLC"},
-    }
-    return JsonResponse(dealers.get(dealer_id, {}))
+    dealers = load_dealerships()
+    for d in dealers:
+        if str(d.get("id")) == str(dealer_id):
+            return JsonResponse(d)
+    return JsonResponse({})
 
 
 def get_reviews_json(request, dealer_id):
